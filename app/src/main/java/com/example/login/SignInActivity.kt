@@ -1,6 +1,7 @@
 package com.example.login
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -8,6 +9,7 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -15,6 +17,7 @@ import androidx.core.view.WindowInsetsCompat
 class SignInActivity : AppCompatActivity() {
     private lateinit var launcher: ActivityResultLauncher<Intent>
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -39,7 +42,7 @@ class SignInActivity : AppCompatActivity() {
             }else{
                 Toast.makeText(this,"로그인 성공",Toast.LENGTH_SHORT).show()
                 val intent=Intent(this, HomeActivity::class.java)
-                intent.putExtra("id",idStr)
+                intent.putExtra("user",User(idStr,passStr))
                 startActivity(intent)
             }
         }
@@ -47,8 +50,14 @@ class SignInActivity : AppCompatActivity() {
         launcher=registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
                 result->
             run{
-                id.setText(result.data!!.getStringExtra("id"))
-                pass.setText(result.data!!.getStringExtra("pass"))
+                val user: User? =result.data!!.getParcelableExtra("user", User::class.java)
+                try {
+                    id.setText(user!!.id)
+                    pass.setText(user!!.pass)
+                }catch (e:Exception){
+                    e.printStackTrace()
+                }
+
             }
         }
 

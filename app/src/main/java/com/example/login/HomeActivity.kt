@@ -1,6 +1,7 @@
 package com.example.login
 
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
@@ -8,6 +9,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet.Constraint
@@ -16,6 +18,7 @@ import androidx.core.view.WindowInsetsCompat
 import java.util.Random
 
 class HomeActivity : AppCompatActivity() {
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -40,7 +43,8 @@ class HomeActivity : AppCompatActivity() {
         }
 
 
-        val idstr=intent.getStringExtra("id")
+        val user=intent.getParcelableExtra("user",User::class.java)
+        val idstr=user!!.id
         val id=findViewById<TextView>(R.id.idTextView)
         id.setText("아이디:"+idstr)
 
@@ -67,8 +71,10 @@ class HomeActivity : AppCompatActivity() {
                 else -> false
             }
         }
-        end.setOnClickListener {
+
+        end.setOnClickListener{
             finish()
         }
+
     }
 }

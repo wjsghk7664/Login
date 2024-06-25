@@ -38,8 +38,7 @@ class SignUpActivity : AppCompatActivity() {
                 Toast.makeText(this,"입력되지 않은 정보가 있습니다",Toast.LENGTH_SHORT).show()
             }else{
                 val intent=Intent(this,SignInActivity::class.java)
-                intent.putExtra("id",idStr)
-                intent.putExtra("pass",passStr)
+                intent.putExtra("user",User(idStr,passStr))
                 setResult(RESULT_OK,intent)
                 finish()
             }
