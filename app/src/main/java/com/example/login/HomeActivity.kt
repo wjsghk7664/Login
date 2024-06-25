@@ -1,11 +1,16 @@
 package com.example.login
 
+import android.graphics.Color
 import android.os.Bundle
+import android.view.MotionEvent
+import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet.Constraint
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import java.util.Random
@@ -39,7 +44,29 @@ class HomeActivity : AppCompatActivity() {
         val id=findViewById<TextView>(R.id.idTextView)
         id.setText("아이디:"+idstr)
 
-        val end=findViewById<Button>(R.id.endBtn)
+        val end=findViewById<ConstraintLayout>(R.id.finish_button)
+
+        val btnText=findViewById<TextView>(R.id.pressed_text)
+        val btnImage=findViewById<ImageView>(R.id.pressed_icon)
+
+        end.setOnTouchListener { v: View, event: MotionEvent ->
+            when(event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    btnText.setTextColor(Color.WHITE)
+                    btnImage.setImageResource(R.drawable.clicked_icon)
+                    false
+                }
+                MotionEvent.ACTION_MOVE ->{
+                    if(!end.isPressed) {
+                        btnText.setTextColor(Color.BLACK)
+                        btnImage.setImageResource(R.drawable.unclicked_icon)
+                    }
+
+                    false
+                }
+                else -> false
+            }
+        }
         end.setOnClickListener {
             finish()
         }
