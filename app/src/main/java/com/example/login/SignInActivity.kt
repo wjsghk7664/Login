@@ -1,5 +1,6 @@
 package com.example.login
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -49,7 +50,7 @@ class SignInActivity : AppCompatActivity() {
 
         launcher=registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
                 result->
-            run{
+            if (result.resultCode == Activity.RESULT_OK){
                 val user: User? =result.data!!.getParcelableExtra("user", User::class.java)
                 try {
                     id.setText(user!!.id)
